@@ -1,0 +1,177 @@
+<%- include("partials/header.ejs") %>
+
+<div class="book-details-container">
+
+
+    <!-- Page Title -->
+    <div class="page-header">
+
+        <h1 class="page-title">
+            Book Details
+        </h1>
+
+    </div>
+
+
+
+    <!-- Main Details Card -->
+    <div class="details-card">
+
+
+        <!-- Left Section : Book Cover -->
+        <div class="cover-section">
+
+            <img 
+                src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=300&fit=crop"
+                alt="Book cover"
+                class="book-cover"
+            >
+
+        </div>
+
+
+
+        <!-- Right Section : Book Information -->
+        <div class="details-section">
+
+
+            <!-- Title and Author -->
+            <div class="book-header">
+
+                <h2 class="book-title">
+                    The Great Gatsby
+                </h2>
+
+                <p class="book-author">
+                    F. Scott Fitzgerald
+                </p>
+
+            </div>
+
+
+
+            <!-- Description -->
+            <div class="book-description">
+
+                <h3>Description</h3>
+
+                <p>
+                    A classic novel set in the Jazz Age, telling the story of the mysterious millionaire Jay Gatsby and his love for Daisy Buchanan.
+                </p>
+
+            </div>
+
+
+
+            <!-- Form : Status, Rating, Review -->
+            <form class="book-form">
+
+
+                <!-- Reading Status -->
+                <div class="form-group">
+
+                    <label for="reading-status">
+                        Reading Status
+                    </label>
+
+                    <select id="reading-status" name="reading_status">
+
+                        <option value="planned">
+                            Planned
+                        </option>
+
+                        <option value="currently_reading">
+                            Currently Reading
+                        </option>
+
+                        <option value="completed">
+                            Completed
+                        </option>
+
+                        <option value="dropped">
+                            Dropped
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- Rating -->
+                <div class="form-group">
+
+                    <label for="rating">
+                        Rating
+                    </label>
+
+                    <select id="rating" name="rating">
+
+                        <option value="0">
+                            No Rating
+                        </option>
+
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- Review Section -->
+                <div class="form-group">
+
+                    <label for="review">
+                        Review & Notes
+                    </label>
+
+                    <textarea
+                        id="review"
+                        name="review"
+                        class="review-textarea"
+                        placeholder="Enter your thoughts about the book here... e.g., Key takeaways, favorite quotes, summary."
+                        rows="5"
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- Save Button -->
+                <div class="form-actions">
+
+                    <button type="submit" class="save-button">
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+
+
+            <!-- Back Navigation -->
+            <div class="back-link">
+
+                <a href="/library">
+                    Back to Library
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

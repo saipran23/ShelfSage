@@ -1,0 +1,337 @@
+<%- include("partials/header.ejs") %>
+
+
+<div class="book-details-container">
+
+    <div class="page-header">
+
+        <h1 class="page-title">
+            Book Details
+        </h1>
+
+    </div>
+
+    <!-- Content Card -->
+
+    <div  class="details-card">
+        <div class="cover-section">
+
+           <% if(!book.cover_id ){ %>
+                <img src="/images/default-cover.png" alt="Book cover">
+            <% }else{ %>
+                <img src="https://covers.openlibrary.org/b/id/<%= book.cover_id  %>-L.jpg" alt="Book cover">
+            <% } %>
+
+        </div>
+
+        <div class="details-section">
+
+            <div class="book-header">
+
+                <h2 class="book-title">
+                    <%= book.title %>
+                </h2>
+
+                <p class="book-author">
+                    <%= book.author_name %>
+                </p>
+
+            </div>
+
+            <div class="discription">
+                <h3>Description</h3>
+                <p>
+                    <%= book.description %>
+                </p>
+            </div>
+
+        
+            <form class="book-form" action="/update-book" method="POST">
+                <input type="hidden" name="id" value="<%= book.id %>">
+
+            <div class="form-group">
+
+                    <label for="reading-status">
+                        Status
+                    </label>
+
+                    <select name="reading_status">
+
+                        <option value="Planned"
+                            <%= book.reading_status === "Planned" ? "selected" : "" %>>
+                            Planned
+                        </option>
+
+                        <option value="Currently Reading"
+                            <%= book.reading_status === "Currently Reading" ? "selected" : "" %>>
+                            Currently Reading
+                        </option>
+
+                        <option value="Completed"
+                            <%= book.reading_status === "Completed" ? "selected" : "" %>>
+                            Completed
+                        </option>
+
+                    </select>
+
+                </div>
+            
+
+            
+                <div class="form-group">
+
+                    <label for="rating">
+                        Rating
+                    </label>
+
+                    <select id="rating" name="rating">
+
+                       <option value="0" <%= Number(book.rating) === 0 ? "selected" : "" %>>
+                            No Rating
+                        </option>
+
+                        <option value="1" <%= Number(book.rating) === 1 ? "selected" : "" %>>1 Star</option>
+                        <option value="2" <%= Number(book.rating) === 2 ? "selected" : "" %>>2 Stars</option>
+                        <option value="3" <%= Number(book.rating) === 3 ? "selected" : "" %>>3 Stars</option>
+                        <option value="4" <%= Number(book.rating) === 4 ? "selected" : "" %>>4 Stars</option>
+                        <option value="5" <%= Number(book.rating) === 5 ? "selected" : "" %>>5 Stars</option>
+
+
+
+                    </select>
+
+                </div>
+
+                <div class="form-group review-block">
+
+                    <label for="review">
+                        Review & Notes
+                    </label>
+
+                    <textarea
+                        id="review"
+                        name="review"
+                        class="review-textarea"
+                        placeholder="Enter your thoughts about the book here... e.g., Key takeaways, favorite quotes, summary."
+                        rows="5"
+                    ></textarea>
+
+                </div>
+
+                <div class="buttons">
+
+                    <div class="form-actions">
+
+                        <button type="submit" class="save-button">
+
+                            Save Changes
+
+                        </button>
+
+                    </div>
+
+                    <div class="back-link">
+
+                        <a href="/library">
+                            Back to Library
+                        </a>
+
+                    </div>
+                </div>
+
+            </form>
+
+
+
+        </div>
+
+    </div>
+
+    <div class="notes-container">
+    <% for(let note of notes) { %>
+
+        <div class="note-container">
+            <h3 class="note-id">NOTES : <%= note.id %></h3>
+            <form class="note-form" action="/update-notes" method="POST">
+
+                <input type="hidden" name="id" value="<%= note.id %>">
+                <input type="hidden" name="book_id" value="<%= note.book_id %>">
+
+                <!-- Hidden input to store Quill HTML -->
+                <input 
+                    type="hidden" 
+                    name="note" 
+                    id="note-input-<%= note.id %>"
+                >
+
+                <!-- Toolbar -->
+                <div id="toolbar-<%= note.id %>">
+                     <span class="ql-formats">
+                        <select class="ql-font"></select>
+                        <select class="ql-size"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-color"></select>
+                        <select class="ql-background"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-script" value="sub"></button>
+                        <button class="ql-script" value="super"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-header" value="1"></button>
+                        <button class="ql-header" value="2"></button>
+                        <button class="ql-blockquote"></button>
+                        <button class="ql-code-block"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                        <button class="ql-indent" value="-1"></button>
+                        <button class="ql-indent" value="+1"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-direction" value="rtl"></button>
+                        <select class="ql-align"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-link"></button>
+                        <button class="ql-image"></button>
+                        <button class="ql-video"></button>
+                        <button class="ql-formula"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-clean"></button>
+                    </span>
+                </div>
+
+                
+                <div 
+                    id="editor-<%= note.id %>" 
+                    style="height:150px;"
+                ></div>
+
+                <button
+                    type="button"
+                    class="edit-button"   
+                    onclick="enableEdit(<%= note.id %>)"
+                    id="edit-btn-<%= note.id %>">
+                    Edit
+                </button>
+
+                <!-- Save button -->
+                <div class="sav-can-button-div">
+                    <button
+                        type="submit"
+                        id="save-btn-<%= note.id %>"
+                        hidden>
+                        Save
+                    </button>
+
+                    <!-- Cancel button -->
+                    <button
+                        type="button"
+                        onclick="cancelEdit(<%= note.id %>)"
+                        id="cancel-btn-<%= note.id %>"
+                        hidden>
+                        Cancel
+                    </button>
+                </div>
+            </form>
+
+            </div>
+
+        <% } %>
+    </div>
+
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script>
+
+const quills = {};
+const originalContent = {};
+
+<% for (let note of notes) { %>
+
+    // Initialize Quill
+    quills[<%= note.id %>] = new Quill("#editor-<%= note.id %>", {
+
+        theme: "snow",
+
+        modules: {
+            toolbar: "#toolbar-<%= note.id %>"
+        }
+
+    });
+
+    // Load content
+    quills[<%= note.id %>].root.innerHTML = `<%- note.note %>`;
+
+    // Store original content
+    originalContent[<%= note.id %>] =
+        quills[<%= note.id %>].root.innerHTML;
+
+    // Make readOnly initially
+    quills[<%= note.id %>].enable(false);
+
+<% } %>
+
+
+// EDIT FUNCTION
+function enableEdit(noteId){
+
+    quills[noteId].enable(true);
+
+    document.getElementById(`edit-btn-${noteId}`).hidden = true;
+
+    document.getElementById(`save-btn-${noteId}`).hidden = false;
+
+    document.getElementById(`cancel-btn-${noteId}`).hidden = false;
+}
+
+
+// CANCEL FUNCTION
+function cancelEdit(noteId){
+
+    // Restore original content
+    quills[noteId].root.innerHTML =
+        originalContent[noteId];
+
+    // Disable editor
+    quills[noteId].enable(false);
+
+    document.getElementById(`edit-btn-${noteId}`).hidden = false;
+
+    document.getElementById(`save-btn-${noteId}`).hidden = true;
+
+    document.getElementById(`cancel-btn-${noteId}`).hidden = true;
+}
+
+
+// SAVE FUNCTION (IMPORTANT)
+document.querySelectorAll(".note-form").forEach(form => {
+
+    form.addEventListener("submit", function(){
+
+        const id = this.querySelector("[name='id']").value;
+
+        document.getElementById(`note-input-${id}`).value =
+            quills[id].getText();
+
+    });
+
+});
+
+</script>
+
+
+  <%- include('partials/footer.ejs'); -%>

@@ -1,0 +1,115 @@
+<%- include("partials/header.ejs") %>
+
+<% if (typeof hasError !== "undefined" && hasError) { %>
+    <script>
+        alert("Library failed to load. Redirecting to library...");
+        window.location.href = "/discover";
+    </script>
+<% } %>
+
+<div class="myLibrary-container">
+
+    <div class="search-section">
+
+        <form action="/library" method="GET" class="search-form">
+
+            <input 
+                type="text"
+                name="query"
+                class="search-input"
+                placeholder="Search for books by title or author..."
+                required
+                value="<%= searchQuery || '' %>"
+            >
+
+            <button type="submit" class="search-button">
+                🔍 Search
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <% if (books && books.length > 0){ %>
+
+    <div class="cards-container">
+
+
+       <%  for(let book of books){%>
+
+        <div class="book-card">
+
+            <!-- Book Cover and Status -->
+            <div class="book-cover-container">
+
+                
+                <% if(!book.cover_id){ %>
+                    <img src="/images/default-cover.png" alt="Book cover">
+                <% }else{ %>
+                    <img src="https://covers.openlibrary.org/b/id/<%= book.cover_id  %>-S.jpg" alt="Book cover">
+                <% } %>
+
+            </div>
+
+
+
+            <!-- Book Info -->
+            <div class="book-info-container">
+
+                <span class="status-badge">
+                    <%= book.reading_status %>
+                </span>
+
+                <h4 class="book-title">
+                    <%= book.title %>
+                </h4>
+
+                <p class="book-author">
+                    <%= book.author_name %>
+                </p>
+
+                <p class="book-rating">
+                    Rating: <%= book.rating > 0 ? book.rating : "Not rated" %>
+                </p>
+
+            </div>
+
+
+
+            <!-- Book Action -->
+            <div class="book-action-container">
+
+                <!-- IMPORTANT: This connects to Book Details Page -->
+                <a href="/book/<%= book.id %>" class="view-details-link">
+
+                    <button class="view-details-button">
+                        View Details
+                    </button>
+
+                </a>
+
+            </div>
+
+
+        </div>
+       
+        <% } %>
+
+        <!-- End Book Card -->
+
+
+    </div>
+    <% }else{ %>
+
+        <div class="empty-state">
+            <p>No books in your library yet.</p>
+            <p>Start adding books from the Discover page.</p>
+        </div>
+
+    <% } %>    
+
+
+</div>
+
+  <%- include('partials/footer.ejs'); -%>

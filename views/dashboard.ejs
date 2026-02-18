@@ -1,0 +1,120 @@
+<%- include("partials/header.ejs") %>
+
+<% if (typeof hasError !== "undefined" && hasError) { %>
+    <script>
+        alert("Dashboard failed to load. Redirecting to library...");
+        window.location.href = "/library";
+    </script>
+<% } %>
+
+<div class="dashboard-container">
+        <div class="dashboard-title">
+            
+            <h1>Personal Book Knowledge and Reading Progress Tracker</h1>
+            <p>Track your reading journey and manage your book collection</p>
+            
+        </div>    
+
+        <div  class="stats-container">
+
+            <div class="stat-card tbook">
+                <h2>Total<br> Books </h2>
+                    <span> <%= totalbooks %> </span>
+                
+            </div>
+
+            <div class="stat-card cbook">
+                <h2>Completed <br> Books </h2>
+                    <span> <%= totalCompletedBooks %> </span>
+                
+            </div>
+
+            <div class="stat-card rbook">
+                <h2>Currently <br> Reading</h2>
+                    <span> <%= totalReadingBooks %> </span>
+                
+            </div>
+            
+            <div class="stat-card rating">
+                <h2>Average <br> Rating</h2>
+                    <span> <%= avgRating %> </span>
+                
+            </div>
+            
+            
+        </div>
+
+
+        <div class="middle-section">
+
+            <div class="middle-section-card">
+
+                <h2>Currently Reading</h2>
+                <% if((!currentlyReading || currentlyReading.length === 0)){ %>
+                    <p> No recently added books </p>
+                <% }else{ %>
+
+                <% for(let book of currentlyReading){ %>
+                <div class="reading-item">
+                    <div class="book-icon">
+                        <% if(!book.cover_id){ %>
+                            <img src="/images/default-cover.png" alt="Book cover">
+                        <% }else{ %>
+                            <img src="https://covers.openlibrary.org/b/id/<%= book.cover_id  %>-S.jpg" alt="Book cover">
+                        <% } %>
+                    </div>
+                    <a href="/book/<%= book.id %>">
+                        <div  class="book-info">
+                            <h5><%= book.title %></h5>
+                            <p> <%= book.author_name%> </p>
+                        </div>
+                    </a>
+                </div>
+
+                <% } %>
+                <% } %>
+
+            </div>
+
+            <div class="recently-added-card">
+
+                <h2>Recently Added Books</h2>
+                <% if((!recentlyAdded || recentlyAdded.length === 0)){ %>
+                    <p> No recently added books </p>
+                <% }else{ %>
+
+                
+                     <% for(let book of recentlyAdded){ %>
+                    <div class="added-item">
+                        <div class="book-icon">
+                           <% if(!book.cover_id){ %>
+                                <img src="/images/default-cover.png" alt="Book cover">
+                            <% }else{ %>
+                                <img src="https://covers.openlibrary.org/b/id/<%= book.cover_id  %>-S.jpg" alt="Book cover">
+                            <% } %>
+                        </div>
+
+                        <a href="/book/<%= book.id %>">
+                            <div  class="book-info">
+                                <h5><%= book.title %></h5>
+                                <p> <%= book.date_added%> </p>
+                            </div>
+                        </a>
+                    
+                    </div>
+                    <% } %>
+
+                    
+                
+                <% } %>
+            </div>
+
+            
+        </div>
+
+
+    
+
+</div>
+
+  <%- include('partials/footer.ejs'); -%>
