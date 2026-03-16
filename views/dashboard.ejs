@@ -8,113 +8,131 @@
 <% } %>
 
 <div class="dashboard-container">
-        <div class="dashboard-title">
-            
-            <h1>Personal Book Knowledge and Reading Progress Tracker</h1>
-            <p>Track your reading journey and manage your book collection</p>
-            
-        </div>    
+    <div class="dashboard-title">
+        <h1>Personal Book Knowledge &amp; Reading Progress Tracker</h1>
+        <p>Track your reading journey and manage your book collection</p>
+    </div>
 
-        <div  class="stats-container">
+    <div class="stats-container">
 
-            <div class="stat-card tbook">
-                <h2>Total<br> Books </h2>
-                    <span> <%= totalbooks %> </span>
-                
-            </div>
-
-            <div class="stat-card cbook">
-                <h2>Completed <br> Books </h2>
-                    <span> <%= totalCompletedBooks %> </span>
-                
-            </div>
-
-            <div class="stat-card rbook">
-                <h2>Currently <br> Reading</h2>
-                    <span> <%= totalReadingBooks %> </span>
-                
-            </div>
-            
-            <div class="stat-card rating">
-                <h2>Average <br> Rating</h2>
-                    <span> <%= avgRating %> </span>
-                
-            </div>
-            
-            
+        <div class="stat-card tbook">
+            <h2>📚 Total Books</h2>
+            <span class="stat-number" data-target="<%= totalbooks %>">0</span>
         </div>
 
+        <div class="stat-card cbook">
+            <h2>✅ Completed Books</h2>
+            <span class="stat-number" data-target="<%= totalCompletedBooks %>">0</span>
+        </div>
 
-        <div class="middle-section">
+        <div class="stat-card rbook">
+            <h2>📖 Currently Reading</h2>
+            <span class="stat-number" data-target="<%= totalReadingBooks %>">0</span>
+        </div>
 
-            <div class="middle-section-card">
+        <div class="stat-card rating">
+            <h2>⭐ Average Rating</h2>
+            <span class="stat-number" data-target="<%= avgRating %>" data-decimal="true">0</span>
+        </div>
 
-                <h2>Currently Reading</h2>
-                <% if((!currentlyReading || currentlyReading.length === 0)){ %>
-                    <p> No recently added books </p>
-                <% }else{ %>
+    </div>
 
+    <div class="middle-section">
+
+        <div class="middle-section-card">
+            <h2>Currently Reading</h2>
+            <% if((!currentlyReading || currentlyReading.length === 0)){ %>
+                <p class="empty-list-msg">No books in progress yet.</p>
+            <% }else{ %>
                 <% for(let book of currentlyReading){ %>
                 <div class="reading-item">
                     <div class="book-icon">
                         <% if(!book.cover_id){ %>
                             <img src="/images/default-cover.png" alt="Book cover">
                         <% }else{ %>
-                            <img src="https://covers.openlibrary.org/b/id/<%= book.cover_id  %>-S.jpg" alt="Book cover">
+                            <img src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-S.jpg" alt="Book cover">
                         <% } %>
                     </div>
                     <a href="/book/<%= book.id %>">
-                        <div  class="book-info">
+                        <div class="book-info">
                             <h5><%= book.title %></h5>
-                            <p> <%= book.author_name%> </p>
+                            <p><%= book.author_name %></p>
                         </div>
                     </a>
                 </div>
-
                 <% } %>
-                <% } %>
-
-            </div>
-
-            <div class="recently-added-card">
-
-                <h2>Recently Added Books</h2>
-                <% if((!recentlyAdded || recentlyAdded.length === 0)){ %>
-                    <p> No recently added books </p>
-                <% }else{ %>
-
-                
-                     <% for(let book of recentlyAdded){ %>
-                    <div class="added-item">
-                        <div class="book-icon">
-                           <% if(!book.cover_id){ %>
-                                <img src="/images/default-cover.png" alt="Book cover">
-                            <% }else{ %>
-                                <img src="https://covers.openlibrary.org/b/id/<%= book.cover_id  %>-S.jpg" alt="Book cover">
-                            <% } %>
-                        </div>
-
-                        <a href="/book/<%= book.id %>">
-                            <div  class="book-info">
-                                <h5><%= book.title %></h5>
-                                <p> <%= book.date_added%> </p>
-                            </div>
-                        </a>
-                    
-                    </div>
-                    <% } %>
-
-                    
-                
-                <% } %>
-            </div>
-
-            
+            <% } %>
         </div>
 
+        <div class="recently-added-card">
+            <h2>Recently Added Books</h2>
+            <% if((!recentlyAdded || recentlyAdded.length === 0)){ %>
+                <p class="empty-list-msg">No books added yet.</p>
+            <% }else{ %>
+                <% for(let book of recentlyAdded){ %>
+                <div class="added-item">
+                    <div class="book-icon">
+                        <% if(!book.cover_id){ %>
+                            <img src="/images/default-cover.png" alt="Book cover">
+                        <% }else{ %>
+                            <img src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-S.jpg" alt="Book cover">
+                        <% } %>
+                    </div>
+                    <a href="/book/<%= book.id %>">
+                        <div class="book-info">
+                            <h5><%= book.title %></h5>
+                            <p><%= book.date_added %></p>
+                        </div>
+                    </a>
+                </div>
+                <% } %>
+            <% } %>
+        </div>
 
-    
-
+    </div>
 </div>
 
-  <%- include('partials/footer.ejs'); -%>
+<script>
+    /* Animated counter for stat numbers */
+    function animateCounter(el) {
+        const target = parseFloat(el.dataset.target) || 0;
+        const isDecimal = el.dataset.decimal === 'true';
+        const duration = 1200;
+        const start = performance.now();
+
+        function step(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3); /* ease-out cubic */
+            const current = target * eased;
+            el.textContent = isDecimal ? current.toFixed(1) : Math.floor(current);
+            if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
+
+    /* Trigger counters when cards become visible */
+    const statNumbers = document.querySelectorAll('.stat-number');
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.4 }
+        );
+        statNumbers.forEach(n => observer.observe(n));
+    } else {
+        statNumbers.forEach(n => {
+            n.textContent = n.dataset.decimal === 'true'
+                ? parseFloat(n.dataset.target).toFixed(1)
+                : Math.floor(parseFloat(n.dataset.target));
+        });
+    }
+</script>
+
+<%- include('partials/footer.ejs'); -%>
