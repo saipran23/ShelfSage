@@ -492,10 +492,10 @@ ALCHURI SAIPRANEETH REDDY
 Full-Stack Developer
 
 GitHub:
-[(Add your GitHub link)](https://github.com/saipran23)
+[(Add your GitHub link)(https://github.com/saipran23)
 
 LinkedIn:
-[(Add your LinkedIn link)](https://www.linkedin.com/in/alchuri-sai-praneeth-reddy/)
+(https://www.linkedin.com/in/alchuri-sai-praneeth-reddy/)
 
 ---
 
